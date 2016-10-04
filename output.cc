@@ -2477,7 +2477,7 @@ void printStatusMessage() {
   gettimeofday(&tv, NULL);
   int time = (int) (o.TimeSinceStart(&tv));
 
-  log_write(LOG_STDOUT, "Stats: %d:%02d:%02d elapsed; %d hosts completed (%d up), %d undergoing %s\n",
+  log_write(LOG_STDOUT | LOG_MACHINE, "Stats: %d:%02d:%02d elapsed; %d hosts completed (%d up), %d undergoing %s\n",
             time / 60 / 60, time / 60 % 60, time % 60, o.numhosts_scanned,
             o.numhosts_up, o.numhosts_scanning,
             scantype2str(o.current_scantype));

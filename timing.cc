@@ -692,9 +692,9 @@ bool ScanProgressMeter::printStats(double perc_done,
   // data for decent timing estimates. Also with perc_done == 0
   // these elements will be nonsensical.
   if (perc_done < 0.01) {
-    log_write(LOG_STDOUT, "%s Timing: About %.2f%% done\n",
+    log_write(LOG_STDOUT | LOG_MACHINE, "%s Timing: About %.2f%% done\n",
         scantypestr, perc_done * 100);
-    log_flush(LOG_STDOUT);
+    log_flush(LOG_STDOUT | LOG_MACHINE);
     return true;
   }
 
@@ -709,7 +709,7 @@ bool ScanProgressMeter::printStats(double perc_done,
   ltime = localtime(&timet);
 
   if (ltime) {
-    log_write(LOG_STDOUT, "%s Timing: About %.2f%% done; ETC: %02d:%02d (%.f:%02.f:%02.f remaining)\n",
+    log_write(LOG_STDOUT | LOG_MACHINE, "%s Timing: About %.2f%% done; ETC: %02d:%02d (%.f:%02.f:%02.f remaining)\n",
         scantypestr, perc_done * 100, ltime->tm_hour, ltime->tm_min,
         floor(time_left_s / 60.0 / 60.0),
         floor(fmod(time_left_s / 60.0, 60.0)),
@@ -717,7 +717,7 @@ bool ScanProgressMeter::printStats(double perc_done,
   }
   else {
     log_write(LOG_STDERR, "Timing error: localtime(%f) is NULL\n", (double) timet);
-    log_write(LOG_STDOUT, "%s Timing: About %.2f%% done; ETC: Unknown (%.f:%02.f:%02.f remaining)\n",
+    log_write(LOG_STDOUT | LOG_MACHINE, "%s Timing: About %.2f%% done; ETC: Unknown (%.f:%02.f:%02.f remaining)\n",
         scantypestr, perc_done * 100,
         floor(time_left_s / 60.0 / 60.0),
         floor(fmod(time_left_s / 60.0, 60.0)),
@@ -731,7 +731,7 @@ bool ScanProgressMeter::printStats(double perc_done,
   xml_attribute("etc", "%lu", (unsigned long) last_est.tv_sec);
   xml_close_empty_tag();
   xml_newline();
-  log_flush(LOG_STDOUT|LOG_XML);
+  log_flush(LOG_STDOUT|LOG_XML|LOG_MACHINE);
 
   return true;
 }
